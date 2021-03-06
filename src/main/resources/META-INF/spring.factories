@@ -1,0 +1,6 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.loyayz.simple.oss.autoconfigure.SimpleOssAutoConfiguration,\
+com.loyayz.simple.oss.autoconfigure.SimpleOssLocalAutoConfiguration,\
+com.loyayz.simple.oss.autoconfigure.SimpleOssMinioAutoConfiguration,\
+com.loyayz.simple.oss.autoconfigure.SimpleOssAliyunAutoConfiguration,\
+com.loyayz.simple.oss.autoconfigure.SimpleOssTencentAutoConfiguration
