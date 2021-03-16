@@ -28,10 +28,7 @@ public class SimpleOssMinioAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(MinioClient.class)
     public MinioClient minioClient() {
-        return MinioClient.builder()
-                .endpoint(ossProperties.getEndpoint())
-                .credentials(ossProperties.getAccessKey(), ossProperties.getSecretKey())
-                .build();
+        return MinioOssClient.defaultClient(ossProperties);
     }
 
     @Bean

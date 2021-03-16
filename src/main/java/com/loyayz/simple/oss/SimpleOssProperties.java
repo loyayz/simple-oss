@@ -20,7 +20,7 @@ public class SimpleOssProperties {
     /**
      * 密钥
      */
-    private String secretKey;
+    private String accessSecret;
     /**
      * 对象存储服务的 URL
      */

@@ -2,13 +2,16 @@ package com.loyayz.simple.oss.impl;
 
 import com.loyayz.simple.oss.SimpleOssClient;
 import com.loyayz.simple.oss.SimpleOssFile;
+import com.loyayz.simple.oss.SimpleOssProperties;
 import com.loyayz.simple.oss.SimpleOssRule;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
+import com.qcloud.cos.auth.BasicCOSCredentials;
+import com.qcloud.cos.auth.COSCredentials;
 import com.qcloud.cos.model.DeleteObjectsRequest;
 import com.qcloud.cos.model.ObjectMetadata;
 import com.qcloud.cos.model.PutObjectRequest;
-import lombok.RequiredArgsConstructor;
+import com.qcloud.cos.region.Region;
 
 import java.io.File;
 import java.io.InputStream;
@@ -17,10 +20,18 @@ import java.util.List;
 /**
  * @author loyayz (loyayz@foxmail.com)
  */
-@RequiredArgsConstructor
 public class TencentOssClient implements SimpleOssClient {
     private final SimpleOssRule ossRule;
     private final COSClient ossClient;
+
+    public TencentOssClient(SimpleOssRule ossRule, SimpleOssProperties ossProperties) {
+        this(ossRule, defaultClient(ossProperties));
+    }
+
+    public TencentOssClient(SimpleOssRule ossRule, COSClient cosClient) {
+        this.ossRule = ossRule;
+        this.ossClient = cosClient;
+    }
 
     @Override
     public void createBucket(String bucketName) {
@@ -116,6 +127,13 @@ public class TencentOssClient implements SimpleOssClient {
         this.ossRule.validBucketObjectKey(targetBucketName, targetObjectKey);
 
         ossClient.copyObject(sourceBucketName, sourceObjectKey, targetBucketName, targetObjectKey);
+    }
+
+    public static COSClient defaultClient(SimpleOssProperties ossProperties) {
+        COSCredentials credentials = new BasicCOSCredentials(ossProperties.getAccessKey(), ossProperties.getAccessSecret());
+        // COS 地域 https://cloud.tencent.com/document/product/436/6224
+        Region region = new Region(ossProperties.getRegion());
+        return new COSClient(credentials, new ClientConfig(region));
     }
 
 }

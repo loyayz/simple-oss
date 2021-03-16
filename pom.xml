@@ -4,57 +4,26 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.3</version>
-        <relativePath/>
+        <groupId>com.loyayz</groupId>
+        <artifactId>build</artifactId>
+        <version>1.0.0</version>
     </parent>
 
-    <groupId>com.loyayz</groupId>
     <artifactId>simple-oss</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <name>simple oss</name>
     <description>simple oss</description>
     <url>https://github.com/loyayz/simple-oss</url>
 
-    <licenses>
-        <license>
-            <name>MIT License</name>
-            <url>http://www.opensource.org/licenses/mit-license.php</url>
-        </license>
-    </licenses>
-
-    <developers>
-        <developer>
-            <name>loyayz</name>
-            <email>loyayz@foxmail.com</email>
-            <url>https://github.com/loyayz</url>
-        </developer>
-    </developers>
-
-    <scm>
-        <url>https://github.com/loyayz/simple-oss</url>
-        <connection>scm:git:git://github.com/loyayz/simple-oss.git</connection>
-        <developerConnection>scm:git:ssh://github.com:loyayz/simple-oss.git</developerConnection>
-    </scm>
-
     <properties>
-        <aliyun.oss.version>3.11.3</aliyun.oss.version>
-        <tencent.oss.version>5.6.36</tencent.oss.version>
-        <qiniu.oss.version>7.4.0</qiniu.oss.version>
-        <minio.oss.version>8.1.0</minio.oss.version>
+        <aliyun-oss.version>3.11.3</aliyun-oss.version>
+        <tencent-oss.version>5.6.36</tencent-oss.version>
+        <qiniu-sdk.version>7.4.0</qiniu-sdk.version>
+        <minio.version>8.1.0</minio.version>
 
-        <java.version>1.8</java.version>
-        <project.encoding>UTF-8</project.encoding>
-        <project.build.encoding>UTF-8</project.build.encoding>
-
-        <!--maven plugin-->
-        <nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
-        <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
-        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-        <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
-        <maven-javadoc-plugin.version>3.2.0</maven-javadoc-plugin.version>
+        <spring-boot.version>2.4.3</spring-boot.version>
+        <lombok.version>1.18.18</lombok.version>
     </properties>
 
     <dependencies>
@@ -62,146 +31,61 @@
         <dependency>
             <groupId>com.aliyun.oss</groupId>
             <artifactId>aliyun-sdk-oss</artifactId>
-            <version>${aliyun.oss.version}</version>
+            <version>${aliyun-oss.version}</version>
             <optional>true</optional>
         </dependency>
         <!-- 腾讯 cos -->
         <dependency>
             <groupId>com.qcloud</groupId>
             <artifactId>cos_api</artifactId>
-            <version>${tencent.oss.version}</version>
+            <version>${tencent-oss.version}</version>
             <optional>true</optional>
         </dependency>
-        <!-- 七牛 Kodo -->
+        <!-- 七牛 -->
         <dependency>
             <groupId>com.qiniu</groupId>
             <artifactId>qiniu-java-sdk</artifactId>
-            <version>${qiniu.oss.version}</version>
+            <version>${qiniu-sdk.version}</version>
+            <optional>true</optional>
         </dependency>
         <!-- MinIO -->
         <dependency>
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>
-            <version>${minio.oss.version}</version>
+            <version>${minio.version}</version>
             <optional>true</optional>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring-boot.version}</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure-processor</artifactId>
+            <version>${spring-boot.version}</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
+            <version>${spring-boot.version}</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
             <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
-                <configuration>
-                    <encoding>${project.encoding}</encoding>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>${maven-source-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${maven-javadoc-plugin.version}</version>
-                <configuration>
-                    <failOnError>false</failOnError>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
-    <profiles>
-        <profile>
-            <id>local</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-        <profile>
-            <id>release</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>${nexus-staging-maven-plugin.version}</version>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <serverId>ossrh</serverId>
-                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>${maven-gpg-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-
-            <distributionManagement>
-                <repository>
-                    <id>ossrh</id>
-                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-                </repository>
-            </distributionManagement>
-        </profile>
-    </profiles>
 </project>

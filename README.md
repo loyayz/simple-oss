@@ -10,7 +10,7 @@
   <dependency>
     <groupId>com.loyayz</groupId>
     <artifactId>simple-oss</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
   </dependency>
 
   <!-- 本项目未引入各oss客户端，使用时请根据实际情况自行添加以下依赖之一 -->
@@ -19,25 +19,25 @@
   <dependency>
       <groupId>com.aliyun.oss</groupId>
       <artifactId>aliyun-sdk-oss</artifactId>
-      <version>${aliyun.oss.version}</version>
+      <version>${aliyun-oss.version}</version>
   </dependency>
   <!-- 腾讯 cos -->
   <dependency>
       <groupId>com.qcloud</groupId>
       <artifactId>cos_api</artifactId>
-      <version>${tencent.oss.version}</version>
+      <version>${tencent-oss.version}</version>
   </dependency>
   <!-- 七牛 -->
   <dependency>
     <groupId>com.qiniu</groupId>
     <artifactId>qiniu-java-sdk</artifactId>
-    <version>${qiniu.oss.version}</version>
+    <version>${qiniu-sdk.version}</version>
   </dependency>
   <!-- MinIO -->
   <dependency>
       <groupId>io.minio</groupId>
       <artifactId>minio</artifactId>
-      <version>${minio.oss.version}</version>
+      <version>${minio.version}</version>
   </dependency>
 </dependencies>
 ```
@@ -55,7 +55,7 @@ simple:
     # 密钥id
     accessKey:
     # 密钥
-    secretKey:
+    accessSecret:
     # 对象存储服务的 URL
     endpoint:
     # 区域

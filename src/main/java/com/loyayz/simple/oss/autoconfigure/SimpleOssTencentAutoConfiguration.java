@@ -5,10 +5,6 @@ import com.loyayz.simple.oss.SimpleOssProperties;
 import com.loyayz.simple.oss.SimpleOssRule;
 import com.loyayz.simple.oss.impl.TencentOssClient;
 import com.qcloud.cos.COSClient;
-import com.qcloud.cos.ClientConfig;
-import com.qcloud.cos.auth.BasicCOSCredentials;
-import com.qcloud.cos.auth.COSCredentials;
-import com.qcloud.cos.region.Region;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -31,11 +27,8 @@ public class SimpleOssTencentAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(COSClient.class)
-    public COSClient cosClient() {
-        COSCredentials credentials = new BasicCOSCredentials(ossProperties.getAccessKey(), ossProperties.getSecretKey());
-        // COS 地域 https://cloud.tencent.com/document/product/436/6224
-        Region region = new Region(ossProperties.getRegion());
-        return new COSClient(credentials, new ClientConfig(region));
+    public COSClient tencentOssClient() {
+        return TencentOssClient.defaultClient(ossProperties);
     }
 
     @Bean

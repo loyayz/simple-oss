@@ -6,6 +6,7 @@ import com.loyayz.simple.oss.SimpleOssProperties;
 import com.loyayz.simple.oss.SimpleOssRule;
 import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
+import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.FileInfo;
 import com.qiniu.util.Auth;
@@ -25,10 +26,14 @@ public class QiniuOssClient implements SimpleOssClient {
     private final BucketManager bucketManager;
     private final UploadManager uploadManager;
 
+    public QiniuOssClient(SimpleOssRule ossRule, SimpleOssProperties ossProperties) {
+        this(ossRule, ossProperties, defaultConfiguration(ossProperties));
+    }
+
     public QiniuOssClient(SimpleOssRule ossRule, SimpleOssProperties ossProperties, Configuration config) {
         this.ossRule = ossRule;
         this.ossProperties = ossProperties;
-        this.auth = Auth.create(ossProperties.getAccessKey(), ossProperties.getSecretKey());
+        this.auth = Auth.create(ossProperties.getAccessKey(), ossProperties.getAccessSecret());
         this.bucketManager = new BucketManager(auth, config);
         this.uploadManager = new UploadManager(config);
     }
@@ -124,6 +129,32 @@ public class QiniuOssClient implements SimpleOssClient {
         this.ossRule.validBucketObjectKey(targetBucketName, targetObjectKey);
 
         this.bucketManager.move(sourceBucketName, sourceObjectKey, targetBucketName, targetObjectKey, true);
+    }
+
+    public static Configuration defaultConfiguration(SimpleOssProperties ossProperties) {
+        Region region = null;
+        String regionStr = ossProperties.getRegion();
+        if ("z0".equals(regionStr) || "huadong".equals(regionStr)) {
+            region = Region.huadong();
+            regionStr = "z0";
+        } else if ("z1".equals(regionStr) || "huabei".equals(regionStr)) {
+            region = Region.huabei();
+            regionStr = "z1";
+        } else if ("z2".equals(regionStr) || "huanan".equals(regionStr)) {
+            region = Region.huanan();
+            regionStr = "z2";
+        } else if ("na0".equals(regionStr) || "beimei".equals(regionStr)) {
+            region = Region.beimei();
+            regionStr = "na0";
+        } else if ("as0".equals(regionStr) || "xinjiapo".equals(regionStr) || "dongnanya".equals(regionStr)) {
+            region = Region.xinjiapo();
+            regionStr = "as0";
+        }
+        ossProperties.setRegion(regionStr);
+        if (region == null) {
+            throw new IllegalArgumentException("Unsupported region");
+        }
+        return new com.qiniu.storage.Configuration(region);
     }
 
 }

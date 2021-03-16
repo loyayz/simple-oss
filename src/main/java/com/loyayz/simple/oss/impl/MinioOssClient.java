@@ -6,7 +6,6 @@ import com.loyayz.simple.oss.SimpleOssProperties;
 import com.loyayz.simple.oss.SimpleOssRule;
 import io.minio.*;
 import io.minio.messages.DeleteObject;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.io.File;
@@ -18,11 +17,22 @@ import java.util.stream.Collectors;
 /**
  * @author loyayz (loyayz@foxmail.com)
  */
-@RequiredArgsConstructor
 public class MinioOssClient implements SimpleOssClient {
     private final SimpleOssRule ossRule;
     private final SimpleOssProperties ossProperties;
     private final MinioClient ossClient;
+
+    public MinioOssClient(SimpleOssRule ossRule, SimpleOssProperties ossProperties) {
+        this(ossRule, ossProperties, defaultClient(ossProperties));
+    }
+
+    public MinioOssClient(SimpleOssRule ossRule,
+                          SimpleOssProperties ossProperties,
+                          MinioClient ossClient) {
+        this.ossRule = ossRule;
+        this.ossProperties = ossProperties;
+        this.ossClient = ossClient;
+    }
 
     @Override
     @SneakyThrows
@@ -129,6 +139,13 @@ public class MinioOssClient implements SimpleOssClient {
                 .object(targetObjectKey)
                 .build();
         ossClient.copyObject(args);
+    }
+
+    public static MinioClient defaultClient(SimpleOssProperties ossProperties) {
+        return MinioClient.builder()
+                .endpoint(ossProperties.getEndpoint())
+                .credentials(ossProperties.getAccessKey(), ossProperties.getAccessSecret())
+                .build();
     }
 
 }

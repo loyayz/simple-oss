@@ -23,6 +23,7 @@ public class LocalOssServiceTest {
 
     static {
         SimpleOssProperties ossProperties = new SimpleOssProperties();
+        ossProperties.setRegion(baseDir);
         ossProperties.setEndpoint(baseDir);
         SimpleOssRule ossRule = new DefaultOssRule(ossProperties);
         ossClient = new LocalOssClient(ossRule, ossProperties);

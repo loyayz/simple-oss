@@ -1,12 +1,15 @@
 package com.loyayz.simple.oss.impl;
 
+import com.aliyun.oss.ClientConfiguration;
 import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.common.auth.CredentialsProvider;
+import com.aliyun.oss.common.auth.DefaultCredentialProvider;
 import com.aliyun.oss.model.DeleteObjectsRequest;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.loyayz.simple.oss.SimpleOssClient;
 import com.loyayz.simple.oss.SimpleOssFile;
+import com.loyayz.simple.oss.SimpleOssProperties;
 import com.loyayz.simple.oss.SimpleOssRule;
-import lombok.RequiredArgsConstructor;
 
 import java.io.File;
 import java.io.InputStream;
@@ -16,10 +19,18 @@ import java.util.List;
 /**
  * @author loyayz (loyayz@foxmail.com)
  */
-@RequiredArgsConstructor
 public class AliyunOssClient implements SimpleOssClient {
     private final SimpleOssRule ossRule;
     private final OSSClient ossClient;
+
+    public AliyunOssClient(SimpleOssRule ossRule, SimpleOssProperties ossProperties) {
+        this(ossRule, defaultClient(ossProperties));
+    }
+
+    public AliyunOssClient(SimpleOssRule ossRule, OSSClient ossClient) {
+        this.ossRule = ossRule;
+        this.ossClient = ossClient;
+    }
 
     @Override
     public void createBucket(String bucketName) {
@@ -115,6 +126,15 @@ public class AliyunOssClient implements SimpleOssClient {
         this.ossRule.validBucketObjectKey(targetBucketName, targetObjectKey);
 
         ossClient.copyObject(sourceBucketName, sourceObjectKey, targetBucketName, targetObjectKey);
+    }
+
+    public static OSSClient defaultClient(SimpleOssProperties ossProperties) {
+        String endpoint = ossProperties.getEndpoint();
+        String accessKey = ossProperties.getAccessKey();
+        String accessSecret = ossProperties.getAccessSecret();
+        CredentialsProvider credentialProvider = new DefaultCredentialProvider(accessKey, accessSecret);
+        ClientConfiguration config = new ClientConfiguration();
+        return new OSSClient(endpoint, credentialProvider, config);
     }
 
 }

@@ -1,9 +1,6 @@
 package com.loyayz.simple.oss.autoconfigure;
 
-import com.aliyun.oss.ClientConfiguration;
 import com.aliyun.oss.OSSClient;
-import com.aliyun.oss.common.auth.CredentialsProvider;
-import com.aliyun.oss.common.auth.DefaultCredentialProvider;
 import com.loyayz.simple.oss.SimpleOssClient;
 import com.loyayz.simple.oss.SimpleOssProperties;
 import com.loyayz.simple.oss.SimpleOssRule;
@@ -30,14 +27,13 @@ public class SimpleOssAliyunAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(OSSClient.class)
-    public OSSClient ossClient() {
-        CredentialsProvider credentialProvider = new DefaultCredentialProvider(ossProperties.getAccessKey(), ossProperties.getSecretKey());
-        return new OSSClient(ossProperties.getEndpoint(), credentialProvider, new ClientConfiguration());
+    public OSSClient aliyunOssClient() {
+        return AliyunOssClient.defaultClient(ossProperties);
     }
 
     @Bean
     @ConditionalOnMissingBean(SimpleOssClient.class)
-    public SimpleOssClient simpleFileService(OSSClient ossClient) {
+    public SimpleOssClient simpleOssClient(OSSClient ossClient) {
         return new AliyunOssClient(ossRule, ossClient);
     }
 
